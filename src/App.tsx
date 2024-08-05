@@ -1,7 +1,10 @@
+import {TodoApp} from './components';
+import './css/index.css';
+
 export function App() {
   return (
-    <>
-      <h1>This is the App component</h1>
-    </>
+    <main>
+      <TodoApp />
+    </main>
   );
 }

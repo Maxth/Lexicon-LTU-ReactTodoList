@@ -1,0 +1,14 @@
+@import url('../css/variables.css');
+
+.todo-list {
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+  gap: 1rem;
+  width: 100%;
+}
+
+.todo-list h2 {
+  color: var(--blue);
+  text-align: center;
+}

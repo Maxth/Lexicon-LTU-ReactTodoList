@@ -1,0 +1,57 @@
+@import url('./variables.css');
+
+.todo-item {
+  width: 100%;
+  background-color: var(--blue);
+  height: 4rem;
+  border-radius: 5px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+}
+
+.checkbox {
+  height: 20px;
+  width: 20px;
+  background-color: white;
+  border-radius: 2px;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.container {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+.todo-text {
+  color: white;
+  font-size: 1.5rem;
+}
+
+.trashcan {
+  color: white;
+  cursor: pointer;
+  font-size: 2rem;
+}
+
+.author-text {
+  color: white;
+  font-size: 1.2rem;
+  text-align: right;
+}
+
+.date-text {
+  font-size: 0.7rem;
+  color: white;
+  margin-top: 10px;
+}
+
+.done {
+  text-decoration: line-through;
+  color: var(--done);
+}
