@@ -1,9 +1,10 @@
 import {useState} from 'react';
 import {ITodo, ITodoContext} from '../interfaces';
+import {TSortOptions} from '../types';
 
-const sort = (t1: ITodo, t2: ITodo): number => {
+const defaultSort = (t1: ITodo, t2: ITodo): number => {
   if (!t1.isDone && !t2.isDone) {
-    return t1.timestamp.getTime() - t2.timestamp.getTime();
+    return 0;
   }
   if (t1.isDone && !t2.isDone) {
     return 1;
@@ -25,7 +26,7 @@ export const useTodo = (): ITodoContext => {
           timestamp: new Date(),
           isDone: false,
         },
-      ].sort(sort)
+      ].sort(defaultSort)
     );
   };
 
@@ -35,7 +36,7 @@ export const useTodo = (): ITodoContext => {
     setTodos(prev => [
       ...prev
         .map(t => (t.id === id ? {...t, isDone: !t.isDone} : t))
-        .sort(sort),
+        .sort(defaultSort),
     ]);
 
   const editTodo = (id: string, value: string) =>
@@ -55,6 +56,32 @@ export const useTodo = (): ITodoContext => {
     });
   };
 
+  const sortTodos = (value: TSortOptions) => {
+    switch (value) {
+      case 'oldest':
+        setTodos(prev => [
+          ...prev.sort(
+            (t1, t2) => t1.timestamp.getTime() - t2.timestamp.getTime()
+          ),
+        ]);
+        break;
+      case 'newest':
+        setTodos(prev => [
+          ...prev.sort(
+            (t1, t2) => t2.timestamp.getTime() - t1.timestamp.getTime()
+          ),
+        ]);
+        break;
+      case 'author':
+        setTodos(prev => [
+          ...prev.sort((t1, t2) => t1.author.localeCompare(t2.author)),
+        ]);
+        break;
+      default:
+        break;
+    }
+  };
+
   return {
     todos,
     deleteTodo,
@@ -62,5 +89,6 @@ export const useTodo = (): ITodoContext => {
     toggleDone,
     editTodo,
     moveTodo,
+    sortTodos,
   };
 };

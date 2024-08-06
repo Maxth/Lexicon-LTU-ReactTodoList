@@ -2,12 +2,22 @@
 
 .todo-list {
   display: flex;
+}
+
+.todos {
+  display: flex;
   flex-direction: column;
   align-items: center;
   gap: 1rem;
 }
 
-.todo-list h2 {
+.todos h2 {
   color: var(--blue);
   text-align: center;
+}
+
+.select {
+  position: absolute;
+  height: fit-content;
+  margin-left: 2rem;
 }
