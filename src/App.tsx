@@ -6,7 +6,8 @@ import {ITodoContext} from './interfaces';
 import {useTodo} from './hooks';
 
 export function App() {
-  const {todos, handleAddClick, toggleDone, deleteTodo, editTodo} = useTodo();
+  const {todos, handleAddClick, toggleDone, deleteTodo, editTodo, moveTodo} =
+    useTodo();
 
   return (
     <main>
@@ -19,6 +20,7 @@ export function App() {
             toggleDone,
             deleteTodo,
             editTodo,
+            moveTodo,
           } satisfies ITodoContext
         }
       />

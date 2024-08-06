@@ -5,21 +5,16 @@ import {useTodoContext} from '../outletContext/useTodoContext';
 
 interface ITodoItemProps {
   todo: ITodo;
-  deleteTodo: (id: string) => void;
-  toggleDone: (id: string) => void;
 }
 
-export function TodoItem(props: ITodoItemProps): ReactElement {
-  const {editTodo} = useTodoContext();
+export function TodoItem({todo}: ITodoItemProps): ReactElement {
+  const {editTodo, deleteTodo, toggleDone, moveTodo} = useTodoContext();
   const [isEditEnabled, setIsEditEnabled] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
-  const todoTextClasses =
-    'todo-text-input' + (props.todo.isDone ? ' done' : '');
+  const todoTextClasses = 'todo-text-input' + (todo.isDone ? ' done' : '');
 
-  const toggleEditing = async () => {
+  const toggleEditing = () => {
     setIsEditEnabled(!isEditEnabled);
-    await new Promise(resolve => setTimeout(resolve, 10));
-    inputRef.current?.focus();
   };
 
   const onInputKeyUp: React.KeyboardEventHandler<HTMLInputElement> = e => {
@@ -29,33 +24,37 @@ export function TodoItem(props: ITodoItemProps): ReactElement {
   };
 
   const onEdit: React.ChangeEventHandler<HTMLInputElement> = e => {
-    editTodo(props.todo.id, e.target.value);
+    editTodo(todo.id, e.target.value);
   };
 
   const onDoneClick = () => {
     setIsEditEnabled(false);
     inputRef.current?.blur();
-    props.toggleDone(props.todo.id);
+    toggleDone(todo.id);
   };
 
   return (
     <article className='todo-item'>
       <div className='container'>
         <div onClick={onDoneClick} className='checkbox'>
-          {props.todo.isDone ? (
+          {todo.isDone ? (
             <span className='material-symbols-outlined'>check</span>
           ) : null}
         </div>
         <div className='container'>
-          <input
-            onChange={onEdit}
-            onKeyUp={onInputKeyUp}
-            ref={inputRef}
-            disabled={!isEditEnabled}
-            type='text'
-            value={props.todo.todo}
-            className={todoTextClasses}
-          />
+          {isEditEnabled ? (
+            <input
+              onChange={onEdit}
+              onKeyUp={onInputKeyUp}
+              ref={inputRef}
+              autoFocus
+              type='text'
+              value={todo.todo}
+              className={todoTextClasses}
+            />
+          ) : (
+            <p className={todoTextClasses}>{todo.todo}</p>
+          )}
           <span
             onClick={toggleEditing}
             className={`material-symbols-outlined edit ${
@@ -65,15 +64,27 @@ export function TodoItem(props: ITodoItemProps): ReactElement {
           </span>
         </div>
       </div>
+      <div className='vertical'>
+        <span
+          onClick={() => moveTodo(todo.id, 'up')}
+          className='material-symbols-outlined arrow'>
+          keyboard_arrow_up
+        </span>
+        <span
+          onClick={() => moveTodo(todo.id, 'down')}
+          className='material-symbols-outlined arrow'>
+          keyboard_arrow_down
+        </span>
+      </div>
       <div className='container'>
         <div>
-          <p className='author-text'>Author: {props.todo.author}</p>
+          <p className='author-text'>Author: {todo.author}</p>
           <p className='date-text'>
-            {`Created: ${props.todo.timestamp.toLocaleDateString()} ${props.todo.timestamp.toLocaleTimeString()}`}
+            {`Created: ${todo.timestamp.toLocaleDateString()} ${todo.timestamp.toLocaleTimeString()}`}
           </p>
         </div>
         <span
-          onClick={() => props.deleteTodo(props.todo.id)}
+          onClick={() => deleteTodo(todo.id)}
           className='material-symbols-outlined trashcan'>
           delete
         </span>

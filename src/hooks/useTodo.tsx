@@ -41,5 +41,26 @@ export const useTodo = (): ITodoContext => {
   const editTodo = (id: string, value: string) =>
     setTodos(prev => prev.map(t => (t.id === id ? {...t, todo: value} : t)));
 
-  return {todos, deleteTodo, handleAddClick, toggleDone, editTodo};
+  const moveTodo = (id: string, direction: 'up' | 'down') => {
+    const oldIndex = todos.findIndex(t => t.id === id);
+    const newIndex =
+      direction === 'up'
+        ? Math.max(0, oldIndex - 1)
+        : Math.min(todos.length, oldIndex + 1);
+    setTodos(prev => {
+      const tempTodoArr = [...prev];
+      const todoToMove = tempTodoArr.splice(oldIndex, 1);
+      tempTodoArr.splice(newIndex, 0, ...todoToMove);
+      return tempTodoArr;
+    });
+  };
+
+  return {
+    todos,
+    deleteTodo,
+    handleAddClick,
+    toggleDone,
+    editTodo,
+    moveTodo,
+  };
 };

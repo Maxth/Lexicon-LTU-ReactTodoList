@@ -8,7 +8,7 @@
   justify-content: space-between;
   align-items: center;
   padding: 1rem;
-  gap: 7rem;
+  gap: 3.5rem;
   width: fit-content;
 }
 
@@ -82,4 +82,21 @@
 .done {
   text-decoration: line-through;
   color: var(--done);
+}
+
+.vertical {
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.arrow {
+  color: white;
+  cursor: pointer;
+  font-size: 2rem;
+}
+
+.arrow:hover {
+  color: black;
 }
