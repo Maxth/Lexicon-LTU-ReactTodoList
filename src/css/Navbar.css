@@ -1,0 +1,23 @@
+@import url('./variables.css');
+
+.navbar {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  gap: 3rem;
+  padding-block: 2rem;
+  background-color: var(--grey);
+}
+
+.link {
+  font-size: 1.5rem;
+  text-decoration: none;
+  color: var(--blue);
+}
+
+.link:hover {
+  cursor: pointer;
+  text-decoration: underline;
+}

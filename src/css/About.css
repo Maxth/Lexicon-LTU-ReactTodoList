@@ -1,0 +1,19 @@
+@import url('./variables.css');
+
+.about {
+  display: flex;
+  flex-direction: column;
+  gap: 4rem;
+  align-items: center;
+  justify-content: center;
+}
+
+.about h3 {
+  font-size: 1.4rem;
+  color: var(--blue);
+}
+
+.about p {
+  font-size: 1.1rem;
+  color: var(--blue);
+}

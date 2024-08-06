@@ -1,7 +1,6 @@
 @import url('./variables.css');
 
 .todo-item {
-  width: 100%;
   background-color: var(--blue);
   height: 4rem;
   border-radius: 5px;
@@ -9,6 +8,7 @@
   justify-content: space-between;
   align-items: center;
   padding: 1rem;
+  gap: 7rem;
 }
 
 .checkbox {

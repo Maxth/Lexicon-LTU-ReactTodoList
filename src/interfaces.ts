@@ -5,3 +5,10 @@ export interface ITodo {
   timestamp: Date;
   isDone: boolean;
 }
+
+export interface ITodoContext {
+  todos: ITodo[];
+  deleteTodo: (id: string) => void;
+  handleAddClick: (todo: string, author: string) => void;
+  toggleDone: (id: string) => void;
+}
