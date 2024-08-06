@@ -9,6 +9,7 @@
   align-items: center;
   padding: 1rem;
   gap: 7rem;
+  width: fit-content;
 }
 
 .checkbox {
@@ -26,17 +27,44 @@
   display: flex;
   gap: 1rem;
   align-items: center;
+  width: fit-content;
 }
 
-.todo-text {
+.todo-text-input {
   color: white;
   font-size: 1.5rem;
+  background-color: transparent;
+  border: none;
+  field-sizing: content;
+  padding-bottom: 3px;
+}
+
+.todo-text-input:focus {
+  outline: none;
+}
+
+.underline {
+  text-decoration: underline;
 }
 
 .trashcan {
   color: white;
   cursor: pointer;
   font-size: 2rem;
+}
+
+.trashcan:hover {
+  color: brown;
+}
+
+.edit {
+  font-size: 1.5rem;
+  color: white;
+  cursor: pointer;
+}
+
+.edit:hover {
+  color: black;
 }
 
 .author-text {

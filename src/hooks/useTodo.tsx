@@ -1,5 +1,5 @@
 import {useState} from 'react';
-import {ITodo} from '../interfaces';
+import {ITodo, ITodoContext} from '../interfaces';
 
 const sort = (t1: ITodo, t2: ITodo): number => {
   if (!t1.isDone && !t2.isDone) {
@@ -11,7 +11,7 @@ const sort = (t1: ITodo, t2: ITodo): number => {
   return -1;
 };
 
-export const useTodo = () => {
+export const useTodo = (): ITodoContext => {
   const [todos, setTodos] = useState<ITodo[]>([]);
 
   const handleAddClick = (todo: string, author: string) => {
@@ -38,5 +38,8 @@ export const useTodo = () => {
         .sort(sort),
     ]);
 
-  return {todos, deleteTodo, handleAddClick, toggleDone};
+  const editTodo = (id: string, value: string) =>
+    setTodos(prev => prev.map(t => (t.id === id ? {...t, todo: value} : t)));
+
+  return {todos, deleteTodo, handleAddClick, toggleDone, editTodo};
 };
