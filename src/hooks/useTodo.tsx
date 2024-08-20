@@ -1,4 +1,4 @@
-import {useState} from 'react';
+import {useEffect, useState} from 'react';
 import {ITodo, ITodoContext} from '../interfaces';
 import {TSortOptions} from '../types';
 
@@ -81,6 +81,20 @@ export const useTodo = (): ITodoContext => {
         break;
     }
   };
+
+  useEffect(() => {
+    const fetchTodos = async () => {
+      const res = await fetch('https://localhost:7047/api/TodoItems', {
+        headers: {accept: 'application/json'},
+      });
+      const data = await res.json();
+      return data.map((obj: ITodo) => ({
+        ...obj,
+        timestamp: new Date(obj.timestamp),
+      }));
+    };
+    fetchTodos().then(data => setTodos(data));
+  }, []);
 
   return {
     todos,
