@@ -15,32 +15,95 @@ const defaultSort = (t1: ITodo, t2: ITodo): number => {
 export const useTodo = (): ITodoContext => {
   const [todos, setTodos] = useState<ITodo[]>([]);
 
-  const handleAddClick = (todo: string, author: string) => {
-    setTodos(prev =>
-      [
-        ...prev,
-        {
-          todo,
-          author,
-          id: Date.now().toString(),
-          timestamp: new Date(),
-          isDone: false,
-        },
-      ].sort(defaultSort)
-    );
+  const handleAddClick = async (todo: string, author: string) => {
+    const res = await fetch(`https://localhost:7047/api/TodoItems`, {
+      method: 'POST',
+      headers: {accept: 'application/json', 'Content-Type': 'application/json'},
+      body: JSON.stringify({todo, author, isDone: false}),
+    });
+    const data = await res.json();
+    if (res.ok) {
+      setTodos(prev =>
+        [
+          ...prev,
+          {
+            todo,
+            author,
+            id: data.id,
+            timestamp: new Date(data.timestamp),
+            isDone: false,
+          },
+        ].sort(defaultSort)
+      );
+    } else {
+      console.error(data);
+    }
   };
 
-  const deleteTodo = (id: string) => setTodos(todos.filter(t => t.id !== id));
+  const deleteTodo = async (id: string) => {
+    const res = await fetch(`https://localhost:7047/api/TodoItems/${id}`, {
+      method: 'DELETE',
+      headers: {accept: 'application/json'},
+    });
+    if (res.ok) {
+      setTodos(todos.filter(t => t.id !== id));
+    } else {
+      const data = await res.json();
+      console.error(data);
+    }
+  };
 
-  const toggleDone = (id: string) =>
-    setTodos(prev => [
-      ...prev
-        .map(t => (t.id === id ? {...t, isDone: !t.isDone} : t))
-        .sort(defaultSort),
-    ]);
+  const toggleDone = async (id: string) => {
+    const todoToUpdate = todos.find(todo => todo.id === id);
 
-  const editTodo = (id: string, value: string) =>
-    setTodos(prev => prev.map(t => (t.id === id ? {...t, todo: value} : t)));
+    if (todoToUpdate === undefined) {
+      throw new Error('Failed to find Todo in toggleDone function');
+    }
+
+    const res = await fetch(`https://localhost:7047/api/TodoItems/${id}`, {
+      method: 'PUT',
+      headers: {accept: 'application/json', 'Content-Type': 'application/json'},
+      body: JSON.stringify({
+        ...todoToUpdate,
+        //FIXME Fix a patch endpoint instead and fix timestamp relation between .NET server and TS client
+        timestamp: todoToUpdate.timestamp.toISOString(),
+        isDone: !todoToUpdate.isDone,
+      }),
+    });
+    if (res.ok) {
+      setTodos(prev => [
+        ...prev
+          .map(t => (t.id === id ? {...t, isDone: !t.isDone} : t))
+          .sort(defaultSort),
+      ]);
+    } else {
+      const data = await res.json();
+      console.error(data);
+    }
+  };
+
+  const editTodo = async (id: string, value: string) => {
+    const todoToUpdate = todos.find(todo => todo.id === id);
+    if (todoToUpdate === undefined) {
+      throw new Error('Failed to find Todo in toggleDone function');
+    }
+    const res = await fetch(`https://localhost:7047/api/TodoItems/${id}`, {
+      method: 'PUT',
+      headers: {accept: 'application/json', 'Content-Type': 'application/json'},
+      body: JSON.stringify({
+        ...todoToUpdate,
+        //FIXME Fix a patch endpoint instead and fix timestamp relation between .NET server and TS client
+        timestamp: todoToUpdate.timestamp.toISOString(),
+        todo: value,
+      }),
+    });
+    if (res.ok) {
+      setTodos(prev => prev.map(t => (t.id === id ? {...t, todo: value} : t)));
+    } else {
+      const data = await res.json();
+      console.error(data);
+    }
+  };
 
   const moveTodo = (id: string, direction: 'up' | 'down') => {
     const oldIndex = todos.findIndex(t => t.id === id);
