@@ -1,3 +1,5 @@
+This project is intended to be used with my other project, the [.NET server part](https://github.com/Maxth/Lexicon-LTU-TodoAPI/tree/main)
+
 # React Todo List with Router
 
 In this exercise I want you to create a todo list with React Typescript. The todo list is will be simple, not any fancy functionalities or animations _(unless you relly want to get creative)_. The purpose is to solve as much as possible with React and apply a react mindset while also adding a router. I have created a React TS application to you that is ready to be used.
